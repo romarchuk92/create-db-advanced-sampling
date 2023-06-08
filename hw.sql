@@ -1,4 +1,4 @@
---=========== Создание и заполнение таблдлицы жанров==================
+--======Задание №1===== Создание и заполнение таблдлицы жанров==================
 create table if not exists Genre (
 genre_id serial primary key,
 	genre_name varchar(40) not null unique 
@@ -65,7 +65,7 @@ create table if not exists Track (
 
 insert into Track(track_name, track_time, album_id) values ('Вокруг шум', 214, 4);
 insert into Track(track_name, track_time, album_id) values ('Ла Ла Ла', 178, 2);
-insert into Track(track_name, track_time, album_id) values ('Моя игра', 271, 1);
+insert into Track(track_name, track_time, album_id) values ('Моя игра (my game)', 271, 1);
 insert into Track(track_name, track_time, album_id) values ('Осколок Льда', 327, 3);
 insert into Track(track_name, track_time, album_id) values ('Выпускной', 344, 1);
 insert into Track(track_name, track_time, album_id) values ('Покинула чат', 192, 2);
@@ -79,7 +79,7 @@ create table if not exists Digest (
 
 insert into Digest(digest_name, digest_year) values ('Сборник рока', 2005);
 insert into Digest(digest_name, digest_year) values ('Сборник рэпа', 2015);
-insert into Digest(digest_name, digest_year) values ('Сборник поп музыки', 2022);
+insert into Digest(digest_name, digest_year) values ('Сборник поп музыки', 2019);
 insert into Digest(digest_name, digest_year) values ('Разное', 2023);
 
 create table if not exists TrackDigest (
@@ -101,4 +101,24 @@ insert into TrackDigest(track_id, digest_id) values (3, 4);
 insert into TrackDigest(track_id, digest_id) values (4, 4);
 insert into TrackDigest(track_id, digest_id) values (5, 4);
 insert into TrackDigest(track_id, digest_id) values (6, 4);
+
+
+--=========Задание №2==============SELECT ЗАПРОСЫ===================================
+
+
+select track_name, track_time from track
+where track_time = (select MAX(track_time) from track);
+
+select track_name from track
+where track_time >= 210;
+
+select digest_name from digest
+where digest_year between 2018 and 2020;
+
+select artist_name from artist
+where artist_name not like '% %';
+
+select track_name from track
+where track_name like '%(my %' or track_name like 'my %' or track_name like 'my %' or track_name like '% my %' or track_name like '% my' or track_name like '% my)' or track_name like '%(мой %' or track_name like 'мой %' or track_name like 'мой %' or track_name like '% мой %' or track_name like '% мой' or track_name like '% мой)';
+ 
 
