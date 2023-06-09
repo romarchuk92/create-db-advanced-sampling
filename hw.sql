@@ -119,8 +119,18 @@ select artist_name from artist
 where artist_name not like '% %';
 
 select track_name from track
-where track_name like '%(my %' or track_name like 'my %' or track_name like 'my %' or track_name like '% my %' or track_name like '% my' or track_name like '% my)' or track_name like '%(мой %' or track_name like 'мой %' or track_name like 'мой %' or track_name like '% мой %' or track_name like '% мой' or track_name like '% мой)';
- 
+where track_name like '%(my %' 
+or track_name like 'my %'  
+or track_name like '% my %' 
+or track_name like '% my' 
+or track_name like '% my)' 
+or track_name like 'my'
+or track_name like '%(мой %' 
+or track_name like 'мой %'  
+or track_name like '% мой %' 
+or track_name like '% мой' 
+or track_name like '% мой)'
+or track_name like 'мой';
 
 --=========Задание №3======================================================
 
@@ -129,20 +139,38 @@ select genre_name, count(GenerArtist.artist_id) as cnt from Genre
 left join GenerArtist on Genre.genre_id = GenerArtist.genere_id
 group by genre_name;
 
+/*Неверное решение
 select album_name, count(track.album_id) as cnt from Album 
 left join Track on Album.album_id = Track.album_id
 where album_year between 2019 and 2020 
-group by album_name;
+group by album_name;*/
+
+--Верное решение
+select count(track.album_id) as cnt from Album 
+join Track on Album.album_id = Track.album_id
+where album_year between 2019 and 2020 
+
 
 select album_name, avg(track.track_time) from Album 
 left join Track on Album.album_id = Track.album_id 
 group by album_name;
 
+/*Неверное решение
 select artist_name, album_year from Artist 
 left join ArtistAlbum on Artist.artist_id = ArtistAlbum.artist_id
 left join Album on ArtistAlbum.album_id = Album.album_id
 where album_year != 2020
-group by artist_name, album_year;
+group by artist_name, album_year;*/
+
+--Верное решение
+select artist_name from Artist  
+where artist_name NOT IN ( 
+	select artist_name
+	from Artist
+	join ArtistAlbum ON Artist.artist_id = ArtistAlbum.artist_id
+	join Album ON ArtistAlbum.album_id = Album.album_id
+	where album_year = 2020
+);
 
 select digest_name, artist_name from Digest 
 left join TrackDigest on Digest.digest_id = TrackDigest.digest_id
